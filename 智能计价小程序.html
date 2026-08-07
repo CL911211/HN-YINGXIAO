@@ -189,6 +189,89 @@
   .num-input::-webkit-outer-spin-button,
   .num-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
+
+  /* ===== Date List (horizontal swipeable) ===== */
+  .date-list-item {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 14px 18px 12px;
+  }
+
+  .date-list-label {
+    font-size: 15px; font-weight: 500; color: var(--text);
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 4px;
+  }
+
+  .date-list-label .req { color: var(--blue-500); font-size: 12px; }
+
+  .date-list {
+    display: flex; gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 2px 0 4px;
+    cursor: grab;
+  }
+
+  .date-list:active { cursor: grabbing; }
+  .date-list::-webkit-scrollbar { display: none; }
+
+  .date-row {
+    flex-shrink: 0;
+    display: flex; flex-direction: column; align-items: stretch; gap: 0;
+    padding: 6px 8px;
+    background: #f8fafc;
+    border-radius: 10px;
+    border: 1.5px solid #e2e8f0;
+    transition: border-color 0.15s;
+    min-width: 76px;
+  }
+
+  .date-row.required { border-color: var(--blue-200, #bfdbfe); background: #eff6ff; }
+
+  .date-row .date-info {
+    display: flex; align-items: center; justify-content: center; gap: 3px;
+    margin-bottom: 4px; min-height: 16px;
+  }
+
+  .date-row .date-text {
+    font-size: 11px; font-weight: 600; color: var(--text);
+    text-align: center; white-space: nowrap;
+  }
+
+  .date-row .date-tag {
+    font-size: 9px; padding: 0 4px; border-radius: 3px;
+    background: var(--blue-100, #bfdbfe); color: var(--blue-600);
+    line-height: 14px; height: 14px;
+  }
+
+  .date-row .date-input-wrap {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 22px;
+  }
+
+  .date-row .date-input-wrap .prefix { font-size: 13px; color: var(--text-3); margin-right: 1px; }
+
+  .date-row .date-input {
+    border: none; outline: none;
+    font-size: 14px; font-weight: 600; text-align: right;
+    width: 52px; color: var(--navy-800); background: transparent;
+    -webkit-appearance: none; -moz-appearance: textfield;
+  }
+
+  .date-row .date-input::placeholder { color: var(--text-3); font-weight: 400; font-size: 11px; }
+  .date-row .date-input::-webkit-outer-spin-button,
+  .date-row .date-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+  /* ===== Result Card for 官网最优价（含礼包）===== */
+  .result-card.payment {
+    background: linear-gradient(145deg, #1e3a5f 0%, #2d5a8e 100%);
+    box-shadow: 0 4px 16px rgba(30,58,95,0.2);
+  }
+
+
+
   /* ===== Chip List (horizontal swipeable) ===== */
   .chip-item {
     flex-direction: column;
@@ -203,6 +286,21 @@
   }
 
   .chip-label .req { color: var(--blue-500); font-size: 12px; }
+
+  .gift-benefits {
+    margin-top: 8px; padding: 8px 10px;
+    background: #f0f7ff; border-radius: 8px;
+    border-left: 3px solid var(--blue-400);
+    font-size: 11px; color: var(--text-2); line-height: 1.6;
+    display: none;
+  }
+  .gift-benefits.show { display: block; }
+  .gift-benefits .benefit-title {
+    font-weight: 600; color: var(--blue-600); margin-bottom: 2px;
+  }
+
+  .discount-coupon-section { display: none; }
+  .discount-coupon-section.show { display: flex; }
 
   .chip-list {
     display: flex; gap: 8px;
@@ -327,13 +425,25 @@
     color: rgba(255,255,255,0.8);
   }
 
-  .result-value {
-    font-size: 28px; font-weight: 700; color: white;
-    line-height: 1.1; position: relative; z-index: 2; letter-spacing: -0.5px;
+  .result-price-row {
+    display: flex; gap: 10px; position: relative; z-index: 2;
+  }
+  .result-price-col {
+    flex: 1; display: flex; flex-direction: column; gap: 3px;
+  }
+  .result-price-tag {
+    font-size: 10px; color: rgba(255,255,255,0.65);
+    padding: 2px 7px; background: rgba(255,255,255,0.13);
+    border-radius: 4px; align-self: flex-start; font-weight: 500;
   }
 
-  .result-value .yen-symbol { font-size: 16px; font-weight: 500; opacity: 0.8; margin-right: 2px; }
-  .result-value .decimal { font-size: 16px; opacity: 0.7; }
+  .result-value {
+    font-size: 20px; font-weight: 700; color: white;
+    line-height: 1.2; letter-spacing: -0.5px;
+  }
+
+  .result-value .yen-symbol { font-size: 13px; font-weight: 500; opacity: 0.8; margin-right: 1px; }
+  .result-value .decimal { font-size: 13px; opacity: 0.7; }
 
   /* ===== Breakdown ===== */
   .breakdown-card {
@@ -367,9 +477,10 @@
   .breakdown-content { padding: 0 16px 16px; }
 
   .bd-section-title {
-    font-size: 11px; color: var(--text-3);
-    margin: 10px 0 6px; font-weight: 600; letter-spacing: 0.5px;
+    font-size: 10px; color: var(--text-3);
+    margin: 10px 0 6px; font-weight: 600; letter-spacing: 0.3px;
     display: flex; align-items: center; gap: 6px;
+    white-space: nowrap; overflow: hidden;
   }
 
   .bd-section-title .pill { padding: 2px 8px; border-radius: 6px; font-size: 10px; }
@@ -382,8 +493,8 @@
   }
 
   .bd-row:last-child { border-bottom: none; }
-  .bd-row .label { color: var(--text-2); }
-  .bd-row .value { font-weight: 600; color: var(--text); }
+  .bd-row .label { color: var(--text-2); white-space: nowrap; }
+  .bd-row .value { font-weight: 600; color: var(--text); white-space: nowrap; }
 
   .bd-row.highlight {
     padding: 10px 12px;
@@ -391,14 +502,54 @@
     border-radius: 10px; margin-top: 8px; border: none;
   }
 
-  .bd-row.highlight .label { color: var(--blue-600); font-weight: 600; font-size: 14px; }
-  .bd-row.highlight .value { color: var(--blue-600); font-size: 16px; }
+  .bd-row.highlight .label { color: var(--blue-600); font-weight: 600; font-size: 12px; }
+  .bd-row.highlight .value { color: var(--blue-600); font-size: 14px; }
 
   .bd-row.highlight.ota { background: linear-gradient(135deg, #fff7ed, #ffedd5); }
   .bd-row.highlight.ota .label,
   .bd-row.highlight.ota .value { color: #ea580c; }
 
   .bd-divider { height: 1px; background: #f1f5f9; margin: 12px 0; }
+
+  /* ===== Breakdown Date Table ===== */
+  .bd-date-table {
+    border-radius: 8px; overflow: hidden;
+    border: 1px solid #e2e8f0; margin: 8px 0 4px;
+  }
+
+  .bd-date-row {
+    display: flex; align-items: center;
+    padding: 7px 8px; font-size: 12px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .bd-date-row:last-child { border-bottom: none; }
+
+  .bd-date-row.bd-date-header {
+    background: #f8fafc; font-weight: 600; color: var(--text-3);
+    font-size: 10px; padding: 5px 8px;
+  }
+
+  .bd-cell-date {
+    flex: 1.2; font-weight: 600; color: var(--text);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .bd-date-header .bd-cell-date { font-weight: 600; color: var(--text-3); }
+
+  .bd-cell {
+    flex: 1; text-align: right; font-weight: 500; color: var(--text-2);
+    white-space: nowrap; font-size: 10px;
+  }
+
+  .bd-cell-official { color: var(--blue-600); font-weight: 600; }
+  .bd-cell-ota { color: #ea580c; font-weight: 600; }
+
+  .bd-date-row.bd-date-total {
+    background: #f1f5f9; font-weight: 700; font-size: 11px;
+    border-top: 2px solid #cbd5e1;
+  }
+  .bd-date-total .bd-cell-date { color: var(--text); }
 
   /* ===== Action Row ===== */
   .action-row { display: flex; gap: 10px; margin-top: 4px; }
@@ -2906,15 +3057,10 @@
   <div class="form-card">
     <div class="form-card-title">基础参数</div>
 
-    <!-- 门市价 -->
-    <div class="form-item">
-      <div class="form-label">门市价<span class="req">*</span></div>
-      <div class="form-control">
-        <div class="input-wrap">
-          <span class="prefix">¥</span>
-          <input type="number" class="num-input" id="marketPrice" placeholder="请输入" min="0" step="1">
-        </div>
-      </div>
+    <!-- 门市价 - 7天滚动日期 -->
+    <div class="form-item date-list-item">
+      <div class="date-list-label">门市价<span class="req">*</span></div>
+      <div class="date-list" id="dateList"></div>
     </div>
 
     <!-- OTA补贴金额 -->
@@ -2960,6 +3106,7 @@
         <div class="chip" data-value="169元金卡礼包" onclick="selectChip(this)">169元金卡礼包</div>
         <div class="chip" data-value="219元金卡礼包" onclick="selectChip(this)">219元金卡礼包</div>
       </div>
+      <div class="gift-benefits" id="giftBenefits"></div>
     </div>
 
     <!-- 前台扫码领券 -->
@@ -2967,11 +3114,23 @@
       <div class="chip-label">前台领券<span class="req">*</span></div>
       <div class="chip-list" data-field="coupon">
         <div class="chip" data-value="无优惠劵" onclick="selectChip(this)">无优惠劵</div>
-        <div class="chip" data-value="10元无门槛劵" onclick="selectChip(this)">10元无门槛劵</div>
-        <div class="chip" data-value="满200减20元" onclick="selectChip(this)">满200减20元</div>
-        <div class="chip" data-value="满300减30元" onclick="selectChip(this)">满300减30元</div>
-        <div class="chip" data-value="满400减40元" onclick="selectChip(this)">满400减40元</div>
+        <div class="chip" data-value="10元优惠劵" onclick="selectChip(this)">10元优惠劵</div>
+        <div class="chip" data-value="20元优惠劵" onclick="selectChip(this)">20元优惠劵</div>
+        <div class="chip" data-value="30元优惠劵" onclick="selectChip(this)">30元优惠劵</div>
+        <div class="chip" data-value="40元优惠劵" onclick="selectChip(this)">40元优惠劵</div>
+        <div class="chip" data-value="18元优惠劵" onclick="selectChip(this)">18元优惠劵</div>
+        <div class="chip" data-value="28元优惠劵" onclick="selectChip(this)">28元优惠劵</div>
+      </div>
+    </div>
+
+    <!-- 门市价折扣券（仅当日单日时显示） -->
+    <div class="form-item chip-item discount-coupon-section" id="discountCouponSection">
+      <div class="chip-label">门市价折扣券<span style="font-size:11px;color:var(--text-3);font-weight:400;margin-left:4px;">仅单日可用</span></div>
+      <div class="chip-list" data-field="discountCoupon">
+        <div class="chip" data-value="无折扣券" onclick="selectChip(this)">无折扣券</div>
+        <div class="chip" data-value="7折门市价折扣劵" onclick="selectChip(this)">7折门市价折扣劵</div>
         <div class="chip" data-value="75折门市价折扣劵" onclick="selectChip(this)">75折门市价折扣劵</div>
+        <div class="chip" data-value="8折门市价折扣劵" onclick="selectChip(this)">8折门市价折扣劵</div>
       </div>
     </div>
 
@@ -2999,15 +3158,54 @@
   <div class="results-section" id="resultsSection">
     <div class="results-grid">
       <div class="result-card official">
-        <div class="result-label">官网最优价 <span class="result-tag">直销</span></div>
-        <div class="result-value" id="officialPrice">
-          <span class="yen-symbol">¥</span><span class="int-part">0</span><span class="decimal">.00</span>
+        <div class="result-label">官网最优价</div>
+        <div class="result-price-row">
+          <div class="result-price-col">
+            <span class="result-price-tag">均价</span>
+            <div class="result-value" id="officialPrice">
+              <span class="yen-symbol">¥</span><span class="int-part">0</span><span class="decimal">.00</span>
+            </div>
+          </div>
+          <div class="result-price-col">
+            <span class="result-price-tag">总价</span>
+            <div class="result-value" id="officialTotal">
+              <span class="yen-symbol">¥</span><span class="int-part">0</span><span class="decimal">.00</span>
+            </div>
+          </div>
         </div>
       </div>
       <div class="result-card ota">
-        <div class="result-label">OTA价格 <span class="result-tag">渠道</span></div>
-        <div class="result-value" id="otaPrice">
-          <span class="yen-symbol">¥</span><span class="int-part">0</span><span class="decimal">.00</span>
+        <div class="result-label">OTA价格</div>
+        <div class="result-price-row">
+          <div class="result-price-col">
+            <span class="result-price-tag">均价</span>
+            <div class="result-value" id="otaPrice">
+              <span class="yen-symbol">¥</span><span class="int-part">0</span><span class="decimal">.00</span>
+            </div>
+          </div>
+          <div class="result-price-col">
+            <span class="result-price-tag">总价</span>
+            <div class="result-value" id="otaTotal">
+              <span class="yen-symbol">¥</span><span class="int-part">0</span><span class="decimal">.00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="result-card payment" style="margin-bottom: 10px; border-radius: 14px; padding: 18px 16px; position: relative; overflow: hidden;">
+      <div class="result-label">官网最优价（含礼包）</div>
+      <div class="result-price-row">
+        <div class="result-price-col">
+          <span class="result-price-tag">均价</span>
+          <div class="result-value" id="paymentPrice">
+            <span class="yen-symbol">¥</span><span class="int-part">0</span><span class="decimal">.00</span>
+          </div>
+        </div>
+        <div class="result-price-col">
+          <span class="result-price-tag">总价</span>
+          <div class="result-value" id="paymentTotal">
+            <span class="yen-symbol">¥</span><span class="int-part">0</span><span class="decimal">.00</span>
+          </div>
         </div>
       </div>
     </div>
@@ -3055,8 +3253,9 @@ const bookingTimeMap = {
   '提前七天': 0.90, '提前十四天': 0.92
 };
 const couponMap = {
-  '无优惠劵': 0, '10元无门槛劵': -10, '满200减20元': -20,
-  '满300减30元': -30, '满400减40元': -40, '75折门市价折扣劵': 0.75
+  '无优惠劵': 0, '10元优惠劵': -10, '18元优惠劵': -18, '20元优惠劵': -20,
+  '28元优惠劵': -28, '30元优惠劵': -30, '40元优惠劵': -40,
+  '7折门市价折扣劵': 0.70, '75折门市价折扣劵': 0.75, '8折门市价折扣劵': 0.80
 };
 const memberLevelMap = { '普卡': 0.97, '银卡': 0.92, '金卡': 0.88, '白金卡': 0.85 };
 const giftMap = {
@@ -3065,11 +3264,22 @@ const giftMap = {
 };
 const listingMap = { '已参加挂牌': 0.95, '未参加挂牌': 1.00 };
 const OTA_MEMBER_RATE = 0.97;
+const COUPON_70 = '7折门市价折扣劵';
 const COUPON_75 = '75折门市价折扣劵';
+const COUPON_80 = '8折门市价折扣劵';
 
 // ===== 选中状态 =====
 const selectedValues = {
-  listing: null, bookingTime: null, gift: null, coupon: null, memberLevel: null
+  listing: null, bookingTime: null, gift: null, coupon: null, discountCoupon: null, memberLevel: null
+};
+
+// ===== 礼包权益数据 =====
+const giftBenefitsMap = {
+  '49元银卡礼包': '首住立减: 8折券×1\n券力优惠: 20元券×2+钟点房券10元×1(价值50元)\n暖心早餐: 早餐券×1\n舒心延迟: 1小时延迟退房券×2\n唯你升级: 房型升级券×6',
+  '69元银卡礼包': '首住立减: 8折券×2\n券力优惠: 20元券×4+钟点房券10元×1(价值90元)\n暖心早餐: 早餐券×2\n舒心延迟: 1小时延迟退房券×2\n唯你升级: 房型升级券×6',
+  '89元银卡礼包': '首住立减: 8折券×2\n券力优惠: 30元券×1+20元券×3+钟点房10元券×1(价值100元)\n暖心早餐: 早餐券×4\n舒心延迟: 1小时延迟退房券×4\n唯你升级: 房型升级券×6',
+  '169元金卡礼包': '首住立减: 7折券×1+8折券×2\n券力优惠: 30元券×2+20元券×3+钟点房10元券×1(价值130元)\n暖心早餐: 早餐券×6\n舒心延迟: 1小时延迟退房券×6\n唯你升级: 房型升级券×8',
+  '219元金卡礼包': '首住立减: 7折券×2+8折券×2\n券力优惠: 30元券×3+20元券×4+钟点房10元×1(价值180元)\n暖心早餐: 早餐券×8\n舒心延迟: 1小时延迟退房券×8\n唯你升级: 房型升级券×8'
 };
 
 // ===== Chip 选择 =====
@@ -3079,6 +3289,30 @@ function selectChip(el) {
   list.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
   selectedValues[field] = el.dataset.value;
+
+  // 前台领券与门市价折扣券互斥
+  if (field === 'coupon') {
+    // 选择了前台领券，清除门市价折扣券（但保留显示状态）
+    selectedValues.discountCoupon = null;
+    document.querySelectorAll('[data-field="discountCoupon"] .chip.active').forEach(c => c.classList.remove('active'));
+  } else if (field === 'discountCoupon') {
+    // 选择了门市价折扣券，清除前台领券
+    selectedValues.coupon = null;
+    document.querySelectorAll('[data-field="coupon"] .chip.active').forEach(c => c.classList.remove('active'));
+  }
+
+  // 显示礼包权益
+  if (field === 'gift') {
+    const benefitsEl = document.getElementById('giftBenefits');
+    const text = giftBenefitsMap[el.dataset.value];
+    if (text) {
+      benefitsEl.innerHTML = '<div class="benefit-title">礼包权益</div>' + text.replace(/\n/g, '<br>');
+      benefitsEl.classList.add('show');
+    } else {
+      benefitsEl.classList.remove('show');
+      benefitsEl.innerHTML = '';
+    }
+  }
 }
 
 // ===== Chip 列表拖拽滚动 =====
@@ -3099,97 +3333,140 @@ document.querySelectorAll('.chip-list').forEach(list => {
   });
 });
 
+// Date list drag scroll
+document.querySelectorAll('.date-list').forEach(list => {
+  let isDown = false, startX, scrollLeft;
+  list.addEventListener('mousedown', e => {
+    isDown = true;
+    startX = e.pageX - list.offsetLeft;
+    scrollLeft = list.scrollLeft;
+  });
+  list.addEventListener('mouseleave', () => { isDown = false; });
+  list.addEventListener('mouseup', () => { isDown = false; });
+  list.addEventListener('mousemove', e => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - list.offsetLeft;
+    list.scrollLeft = scrollLeft - (x - startX);
+  });
+});
+
+// ===== 7天日期初始化 =====
+const weekdayNames = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+
+function initDateList() {
+  const dateList = document.getElementById('dateList');
+  const today = new Date();
+  let html = '';
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(today);
+    d.setDate(d.getDate() + i);
+    const m = d.getMonth() + 1;
+    const day = d.getDate();
+    const wd = weekdayNames[d.getDay()];
+    const isToday = i === 0;
+    const reqMark = isToday ? '<span class="date-tag">当日</span>' : '';
+    html += `<div class="date-row ${isToday ? 'required' : ''}">
+      <div class="date-info">
+        <span class="date-text">${m}月${day}日 ${wd}</span>
+        ${reqMark}
+      </div>
+      <div class="date-input-wrap">
+        <span class="prefix">¥</span>
+        <input type="number" class="date-input" data-date="${m}-${day}" data-index="${i}" placeholder="${isToday ? '必填' : '选填'}" min="0" step="1">
+      </div>
+    </div>`;
+  }
+  dateList.innerHTML = html;
+
+  // 监听日期输入，控制门市价折扣券显示
+  document.querySelectorAll('.date-input').forEach(input => {
+    input.addEventListener('input', updateDiscountCouponVisibility);
+  });
+}
+
+function updateDiscountCouponVisibility() {
+  const filledCount = document.querySelectorAll('.date-input').length;
+  let filledInputs = 0;
+  document.querySelectorAll('.date-input').forEach(input => {
+    if (input.value !== '' && input.value !== null) filledInputs++;
+  });
+  const section = document.getElementById('discountCouponSection');
+  if (filledInputs <= 1) {
+    section.classList.add('show');
+  } else {
+    section.classList.remove('show');
+    // 清除折扣券选择
+    selectedValues.discountCoupon = null;
+    section.querySelectorAll('.chip.active').forEach(c => c.classList.remove('active'));
+  }
+}
+
+initDateList();
+
 // ===== 计算日志 =====
 const LOG_ENABLED = true;
 function logCalc(tag, ...args) {
   if (LOG_ENABLED) console.log('%c[计价][' + tag + ']', 'color:#2563eb;font-weight:bold;', ...args);
 }
 
-// ===== 计算 =====
-function calculate() {
-  const marketPrice = parseInt(document.getElementById('marketPrice').value) || 0;
-  const otaSubsidy = parseInt(document.getElementById('otaSubsidy').value) || 0;
-  const listing = selectedValues.listing;
-  const bookingTime = selectedValues.bookingTime;
-  const gift = selectedValues.gift;
-  const coupon = selectedValues.coupon;
-  const memberLevel = selectedValues.memberLevel;
-
-  // === 日志：原始输入 ===
-  logCalc('输入', '门市价:', marketPrice, '| OTA补贴:', otaSubsidy, '| 挂牌:', listing,
-    '| 预订时间:', bookingTime, '| 礼包:', gift, '| 优惠券:', coupon, '| 会员等级:', memberLevel);
-
+// ===== 单日计算 =====
+function calculateForDate(marketPrice, otaSubsidy, listing, bookingTime, gift, coupon, memberLevel) {
   const listingRate = listingMap[listing];
   const bookingRate = bookingTimeMap[bookingTime];
   const memberRate = memberLevelMap[memberLevel];
   const giftAmt = giftMap[gift];
   const couponVal = couponMap[coupon];
 
-  // === 日志：查表结果 ===
-  logCalc('查表', '挂牌折扣率:', listingRate, '| 时间折扣率:', bookingRate,
-    '| 会员折扣率:', memberRate, '| 礼包金额:', giftAmt, '| 优惠券值:', couponVal);
-
-  // === 日志：异常检测 ===
-  if (listingRate === undefined) console.error('[计价][异常] 挂牌折扣率未找到，挂牌值:', listing);
-  if (bookingRate === undefined) console.error('[计价][异常] 时间折扣率未找到，时间值:', bookingTime);
-  if (memberRate === undefined) console.error('[计价][异常] 会员折扣率未找到，会员值:', memberLevel);
-  if (giftAmt === undefined) console.error('[计价][异常] 礼包金额未找到，礼包值:', gift);
-  if (couponVal === undefined) console.error('[计价][异常] 优惠券值未找到，优惠券值:', coupon);
-
   let officialPrice, officialBreakdown;
 
-  if (coupon === COUPON_75) {
-    // === 75折券分支 ===
-    const discounted = marketPrice * 0.75;
+  if (coupon === COUPON_70 || coupon === COUPON_75 || coupon === COUPON_80) {
+    const rate = couponMap[coupon];
+    const rateLabel = coupon.replace('门市价折扣劵', '');
+    const discounted = marketPrice * rate;
     officialPrice = discounted;
-    logCalc('官网-75折', '门市价:', marketPrice, '× 0.75 =', discounted, '=>', officialPrice);
+    logCalc('官网-' + rateLabel, '门市价:', marketPrice, '×', rate, '=', discounted);
     officialBreakdown = {
-      formula: '门市价 × 75折',
+      formula: '门市价 × ' + rateLabel,
       steps: [
         { label: '门市价', value: marketPrice, fmt: 'yen' },
-        { label: '75折门市价折扣劵', value: 0.75, fmt: 'rate' },
-        { label: '门市价 × 75折', value: discounted, fmt: 'yen' },
+        { label: coupon, value: rate, fmt: 'rate' },
+        { label: '门市价 × ' + rateLabel, value: discounted, fmt: 'yen' },
       ]
     };
   } else {
-    // === 普通券分支 ===
     const basePrice = marketPrice * listingRate * bookingRate * memberRate;
-    officialPrice = basePrice + couponVal + giftAmt;
+    // 礼包不计入官网最优价
+    officialPrice = basePrice + couponVal;
     logCalc('官网-普通', marketPrice, '×', listingRate, '×', bookingRate, '×', memberRate,
-      '=', basePrice, '+ 券:', couponVal, '+ 礼包:', giftAmt, '=>', officialPrice);
-    logCalc('官网-分步', '① 门市价×挂牌:', marketPrice * listingRate,
-      '② ×时间:', marketPrice * listingRate * bookingRate,
-      '③ ×会员:', basePrice,
-      '④ +券+礼包:', officialPrice);
+      '=', basePrice, '+ 券:', couponVal, '=>', officialPrice);
     officialBreakdown = {
-      formula: '门市价 × 锦惠房价码 × 时间 × 会员折扣 + 优惠券 + 礼包',
+      formula: '门市价 × 挂牌折扣 × 时间 × 会员折扣 + 优惠券（仅首日计算）',
       steps: [
         { label: '门市价', value: marketPrice, fmt: 'yen' },
-        { label: '锦惠房价码折扣', value: listingRate, fmt: 'rate' },
+        { label: '挂牌折扣', value: listingRate, fmt: 'rate' },
         { label: '预订时间折扣', value: bookingRate, fmt: 'rate' },
         { label: '会员等级折扣', value: memberRate, fmt: 'rate' },
         { label: '门市价 × 各折扣', value: basePrice, fmt: 'yen' },
         { label: '优惠券金额', value: couponVal, fmt: 'yen' },
-        { label: '会员礼包金额', value: giftAmt, fmt: 'yen' },
       ]
     };
   }
 
-  // === OTA价格计算 ===
+  // 官网最优价（含礼包）= 官网最优价 + 会员礼包
+  const paymentPrice = officialPrice + giftAmt;
+
+  // OTA价格计算
   const otaBase = marketPrice * listingRate * OTA_MEMBER_RATE * bookingRate;
   const otaPrice = otaBase - otaSubsidy;
   logCalc('OTA', marketPrice, '×', listingRate, '×', OTA_MEMBER_RATE, '×', bookingRate,
     '=', otaBase, '- 补贴:', otaSubsidy, '=>', otaPrice);
-  logCalc('OTA-分步', '① 门市价×挂牌:', marketPrice * listingRate,
-    '② ×普卡率:', marketPrice * listingRate * OTA_MEMBER_RATE,
-    '③ ×时间:', otaBase,
-    '④ -补贴:', otaPrice);
 
   const otaBreakdown = {
-    formula: '门市价 × 锦惠房价码 × 普卡(0.97) × 时间 - OTA补贴',
+    formula: '门市价 × 挂牌折扣 × 普卡(0.97) × 时间 - OTA补贴',
     steps: [
       { label: '门市价', value: marketPrice, fmt: 'yen' },
-      { label: '锦惠房价码折扣', value: listingRate, fmt: 'rate' },
+      { label: '挂牌折扣', value: listingRate, fmt: 'rate' },
       { label: '普卡折扣率(固定)', value: OTA_MEMBER_RATE, fmt: 'rate' },
       { label: '预订时间折扣', value: bookingRate, fmt: 'rate' },
       { label: '门市价 × 各折扣', value: otaBase, fmt: 'yen' },
@@ -3197,12 +3474,7 @@ function calculate() {
     ]
   };
 
-  // === 日志：最终结果 ===
-  logCalc('结果', '官网最优价:', officialPrice, '| OTA价格:', otaPrice);
-  logCalc('结果-四舍五入', '官网:', Math.round(officialPrice * 100) / 100,
-    '| OTA:', Math.round(otaPrice * 100) / 100);
-
-  return { officialPrice, otaPrice, officialBreakdown, otaBreakdown };
+  return { marketPrice, officialPrice, otaPrice, paymentPrice, giftAmt, officialBreakdown, otaBreakdown };
 }
 
 // ===== 格式化 =====
@@ -3237,39 +3509,100 @@ function toggleBreakdown() {
   document.getElementById('breakdownCard').classList.toggle('open');
 }
 
-function renderBreakdown(data) {
-  document.getElementById('breakdownContent').innerHTML = `
-    <div class="bd-section-title official"><span class="pill">官网最优价</span> ${data.officialBreakdown.formula}</div>
-    ${data.officialBreakdown.steps.map(s => `<div class="bd-row"><span class="label">${s.label}</span><span class="value">${fmtVal(s)}</span></div>`).join('')}
-    <div class="bd-row highlight"><span class="label">官网最优价</span><span class="value">${fmtYen(data.officialPrice)}</span></div>
-    <div class="bd-divider"></div>
-    <div class="bd-section-title ota"><span class="pill">OTA价格</span> ${data.otaBreakdown.formula}</div>
-    ${data.otaBreakdown.steps.map(s => `<div class="bd-row"><span class="label">${s.label}</span><span class="value">${fmtVal(s)}</span></div>`).join('')}
-    <div class="bd-row highlight ota"><span class="label">OTA价格</span><span class="value">${fmtYen(data.otaPrice)}</span></div>
-  `;
+function renderBreakdown(allResults, giftAmt) {
+  let html = '';
+
+  // Formula header
+  const first = allResults[0].data;
+  html += `<div class="bd-section-title official"><span class="pill">官网最优价</span> ${first.officialBreakdown.formula}</div>`;
+  html += `<div class="bd-section-title ota"><span class="pill">OTA价格</span> ${first.otaBreakdown.formula}</div>`;
+
+  // Per-date horizontal rows
+  let sumMarket = 0, sumOfficial = 0, sumOta = 0;
+  html += `<div class="bd-date-table">`;
+  html += `<div class="bd-date-row bd-date-header">
+    <span class="bd-cell-date">日期</span>
+    <span class="bd-cell">门市价</span>
+    <span class="bd-cell">官网最优价</span>
+    <span class="bd-cell">OTA价格</span>
+  </div>`;
+  allResults.forEach(r => {
+    sumMarket += r.data.marketPrice;
+    sumOfficial += r.data.officialPrice;
+    sumOta += r.data.otaPrice;
+    html += `<div class="bd-date-row">
+      <span class="bd-cell-date">${r.dateLabel}</span>
+      <span class="bd-cell">${fmtYen(r.data.marketPrice)}</span>
+      <span class="bd-cell bd-cell-official">${fmtYen(r.data.officialPrice)}</span>
+      <span class="bd-cell bd-cell-ota">${fmtYen(r.data.otaPrice)}</span>
+    </div>`;
+  });
+  // 合计行
+  html += `<div class="bd-date-row bd-date-total">
+    <span class="bd-cell-date">合计</span>
+    <span class="bd-cell">${fmtYen(sumMarket)}</span>
+    <span class="bd-cell bd-cell-official">${fmtYen(sumOfficial)}</span>
+    <span class="bd-cell bd-cell-ota">${fmtYen(sumOta)}</span>
+  </div>`;
+  html += `</div>`;
+
+  // 计算官网最优价（含礼包）与OTA总价的差异
+  const paymentTotalBd = sumOfficial + giftAmt;
+  const priceDiff = paymentTotalBd - sumOta;
+
+  // Gift + payment note
+  html += `<div class="bd-divider"></div>`;
+  html += `<div class="bd-row"><span class="label">会员礼包金额（仅计一次）</span><span class="value">${fmtYen(giftAmt)}</span></div>`;
+  html += `<div class="bd-row highlight" style="background: linear-gradient(135deg, #e0e7ff, #c7d2fe);"><span class="label" style="color:#4338ca;">官网最优价（含礼包）= 官网最优价总价 + 会员礼包</span><span class="value" style="color:#4338ca;">${fmtYen(paymentTotalBd)}</span></div>`;
+  html += `<div class="bd-row highlight" style="background: linear-gradient(135deg, #fef3c7, #fde68a);"><span class="label" style="color:#92400e;">官网最优价（含礼包）VS OTA价格</span><span class="value" style="color:#92400e;">${fmtYen(priceDiff)}</span></div>`;
+
+  document.getElementById('breakdownContent').innerHTML = html;
+}
+
+function fmtTotalText(val) {
+  return '总价 ' + fmtYen(val);
 }
 
 const fieldLabels = {
   listing: '是否挂牌', bookingTime: '预订时间', gift: '会员礼包',
-  coupon: '前台领券', memberLevel: '会员等级'
+  coupon: '前台领券', discountCoupon: '门市价折扣券', memberLevel: '会员等级'
 };
 
 function doCalculate() {
-  const mp = document.getElementById('marketPrice').value;
+  // Collect date inputs
+  const dateInputs = document.querySelectorAll('.date-input');
+  const dateData = [];
+  let todayValue = null;
+
+  dateInputs.forEach((input, idx) => {
+    const val = input.value;
+    const dateLabel = input.closest('.date-row').querySelector('.date-text').textContent;
+    if (val !== '' && val !== null) {
+      const numVal = parseInt(val);
+      if (!isNaN(numVal) && numVal >= 0) {
+        dateData.push({ index: idx, dateLabel, marketPrice: numVal });
+        if (idx === 0) todayValue = numVal;
+      }
+    }
+  });
+
+  if (todayValue === null) { showToast('请输入当日门市价'); return; }
+
   const os = document.getElementById('otaSubsidy').value;
-
-  if (mp === '' || mp === null) { showToast('请输入门市价'); return; }
   if (os === '' || os === null) { showToast('请输入OTA补贴金额'); return; }
-
-  const mpVal = parseInt(mp), osVal = parseInt(os);
-  if (isNaN(mpVal) || mpVal < 0) { showToast('门市价需为≥0的整数'); return; }
+  const osVal = parseInt(os);
   if (isNaN(osVal) || osVal < 0) { showToast('OTA补贴金额需为≥0的整数'); return; }
 
-  for (const field of ['listing','bookingTime','gift','coupon','memberLevel']) {
+  for (const field of ['listing','bookingTime','gift','memberLevel']) {
     if (!selectedValues[field]) {
       showToast('请选择' + fieldLabels[field]);
       return;
     }
+  }
+  // 前台领券与门市价折扣券至少选择一项
+  if (!selectedValues.coupon && !selectedValues.discountCoupon) {
+    showToast('请选择前台领券或门市价折扣券');
+    return;
   }
 
   const btn = document.getElementById('calcBtn');
@@ -3277,10 +3610,44 @@ function doCalculate() {
   btn.disabled = true;
 
   setTimeout(() => {
-    const data = calculate();
-    renderPrice(document.getElementById('officialPrice'), data.officialPrice);
-    renderPrice(document.getElementById('otaPrice'), data.otaPrice);
-    renderBreakdown(data);
+    const listing = selectedValues.listing;
+    const bookingTime = selectedValues.bookingTime;
+    const gift = selectedValues.gift;
+    const coupon = selectedValues.coupon || '无优惠劵';
+    const memberLevel = selectedValues.memberLevel;
+
+    // Calculate for all dates (前台领劵仅第一天计算，后续天数不使用优惠券)
+    // 门市价折扣券仅在单日时生效
+    const useDiscount = selectedValues.discountCoupon && selectedValues.discountCoupon !== '无折扣券' && dateData.length === 1;
+    const effectiveCoupon = useDiscount ? selectedValues.discountCoupon : coupon;
+    const allResults = dateData.map((d, i) => ({
+      dateLabel: d.dateLabel,
+      marketPrice: d.marketPrice,
+      data: calculateForDate(d.marketPrice, osVal, listing, bookingTime, gift, useDiscount ? effectiveCoupon : (i === 0 ? coupon : '无优惠劵'), memberLevel)
+    }));
+
+    // Compute averages for main display
+    const n = allResults.length;
+    const sumOfficial = allResults.reduce((s, r) => s + r.data.officialPrice, 0);
+    const sumOta = allResults.reduce((s, r) => s + r.data.otaPrice, 0);
+    const avgOfficial = sumOfficial / n;
+    const avgOta = sumOta / n;
+    const giftAmt = giftMap[gift];
+
+    // 官网最优价（含礼包）= 官网最优价均价 + 会员礼包（礼包仅计一次，不叠加）
+    const paymentPrice = avgOfficial + giftAmt;
+    const paymentTotal = sumOfficial + giftAmt;
+
+    renderPrice(document.getElementById('officialPrice'), avgOfficial);
+    renderPrice(document.getElementById('otaPrice'), avgOta);
+    renderPrice(document.getElementById('paymentPrice'), paymentPrice);
+
+    renderPrice(document.getElementById('officialTotal'), sumOfficial);
+    renderPrice(document.getElementById('otaTotal'), sumOta);
+    renderPrice(document.getElementById('paymentTotal'), paymentTotal);
+
+    // Breakdown: all dates
+    renderBreakdown(allResults, giftAmt);
 
     const section = document.getElementById('resultsSection');
     section.classList.remove('show');
@@ -3294,11 +3661,15 @@ function doCalculate() {
 }
 
 function resetForm() {
-  document.getElementById('marketPrice').value = '';
+  document.querySelectorAll('.date-input').forEach(input => { input.value = ''; });
   document.getElementById('otaSubsidy').value = '0';
 
   Object.keys(selectedValues).forEach(field => { selectedValues[field] = null; });
   document.querySelectorAll('.chip.active').forEach(c => c.classList.remove('active'));
+
+  document.getElementById('giftBenefits').classList.remove('show');
+  document.getElementById('giftBenefits').innerHTML = '';
+  document.getElementById('discountCouponSection').classList.remove('show');
 
   document.getElementById('resultsSection').classList.remove('show');
   document.getElementById('breakdownCard').classList.remove('open');
@@ -3323,7 +3694,6 @@ function shareCard() {
 }
 
 document.getElementById('calcBtn').addEventListener('click', doCalculate);
-document.getElementById('marketPrice').addEventListener('keydown', e => { if (e.key === 'Enter') doCalculate(); });
 document.getElementById('otaSubsidy').addEventListener('keydown', e => { if (e.key === 'Enter') doCalculate(); });
 </script>
 
