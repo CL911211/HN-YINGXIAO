@@ -3352,28 +3352,21 @@ document.querySelectorAll('.date-list').forEach(list => {
 });
 
 // ===== 7天日期初始化 =====
-const weekdayNames = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 
 function initDateList() {
   const dateList = document.getElementById('dateList');
-  const today = new Date();
   let html = '';
   for (let i = 0; i < 7; i++) {
-    const d = new Date(today);
-    d.setDate(d.getDate() + i);
-    const m = d.getMonth() + 1;
-    const day = d.getDate();
-    const wd = weekdayNames[d.getDay()];
     const isToday = i === 0;
     const reqMark = isToday ? '<span class="date-tag">当日</span>' : '';
     html += `<div class="date-row ${isToday ? 'required' : ''}">
       <div class="date-info">
-        <span class="date-text">${m}月${day}日 ${wd}</span>
+        <span class="date-text">第${i + 1}天</span>
         ${reqMark}
       </div>
       <div class="date-input-wrap">
         <span class="prefix">¥</span>
-        <input type="number" class="date-input" data-date="${m}-${day}" data-index="${i}" placeholder="${isToday ? '必填' : '选填'}" min="0" step="1">
+        <input type="number" class="date-input" data-index="${i}" placeholder="${isToday ? '必填' : '选填'}" min="0" step="1">
       </div>
     </div>`;
   }
