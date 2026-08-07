@@ -472,7 +472,7 @@
   .breakdown-card.open .toggle-icon { transform: rotate(180deg); }
 
   .breakdown-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
-  .breakdown-card.open .breakdown-body { max-height: 800px; }
+  .breakdown-card.open .breakdown-body { max-height: 2000px; }
 
   .breakdown-content { padding: 0 16px 16px; }
 
@@ -480,8 +480,10 @@
     font-size: 10px; color: var(--text-3);
     margin: 10px 0 6px; font-weight: 600; letter-spacing: 0.3px;
     display: flex; align-items: center; gap: 6px;
-    white-space: nowrap; overflow: hidden;
+    overflow: hidden;
   }
+  .bd-section-title .pill { flex-shrink: 0; }
+  .bd-section-title .formula-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
   .bd-section-title .pill { padding: 2px 8px; border-radius: 6px; font-size: 10px; }
   .bd-section-title.official .pill { background: var(--blue-50); color: var(--blue-600); }
@@ -493,8 +495,8 @@
   }
 
   .bd-row:last-child { border-bottom: none; }
-  .bd-row .label { color: var(--text-2); white-space: nowrap; }
-  .bd-row .value { font-weight: 600; color: var(--text); white-space: nowrap; }
+  .bd-row .label { color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .bd-row .value { font-weight: 600; color: var(--text); white-space: nowrap; flex-shrink: 0; margin-left: 8px; }
 
   .bd-row.highlight {
     padding: 10px 12px;
@@ -3434,7 +3436,7 @@ function calculateForDate(marketPrice, otaSubsidy, listing, bookingTime, gift, c
     logCalc('官网-普通', marketPrice, '×', listingRate, '×', bookingRate, '×', memberRate,
       '=', basePrice, '+ 券:', couponVal, '=>', officialPrice);
     officialBreakdown = {
-      formula: '门市价 × 挂牌折扣 × 时间 × 会员折扣 + 优惠券（仅首日计算）',
+      formula: '门市价 × 挂牌 × 时间 × 会员 + 优惠券(首日)',
       steps: [
         { label: '门市价', value: marketPrice, fmt: 'yen' },
         { label: '挂牌折扣', value: listingRate, fmt: 'rate' },
@@ -3456,7 +3458,7 @@ function calculateForDate(marketPrice, otaSubsidy, listing, bookingTime, gift, c
     '=', otaBase, '- 补贴:', otaSubsidy, '=>', otaPrice);
 
   const otaBreakdown = {
-    formula: '门市价 × 挂牌折扣 × 普卡(0.97) × 时间 - OTA补贴',
+    formula: '门市价 × 挂牌 × 普卡(0.97) × 时间 - OTA补贴',
     steps: [
       { label: '门市价', value: marketPrice, fmt: 'yen' },
       { label: '挂牌折扣', value: listingRate, fmt: 'rate' },
@@ -3507,8 +3509,8 @@ function renderBreakdown(allResults, giftAmt) {
 
   // Formula header
   const first = allResults[0].data;
-  html += `<div class="bd-section-title official"><span class="pill">官网最优价</span> ${first.officialBreakdown.formula}</div>`;
-  html += `<div class="bd-section-title ota"><span class="pill">OTA价格</span> ${first.otaBreakdown.formula}</div>`;
+  html += `<div class="bd-section-title official"><span class="pill">官网最优价</span><span class="formula-text">${first.officialBreakdown.formula}</span></div>`;
+  html += `<div class="bd-section-title ota"><span class="pill">OTA价格</span><span class="formula-text">${first.otaBreakdown.formula}</span></div>`;
 
   // Per-date horizontal rows
   let sumMarket = 0, sumOfficial = 0, sumOta = 0;
@@ -3546,8 +3548,8 @@ function renderBreakdown(allResults, giftAmt) {
   // Gift + payment note
   html += `<div class="bd-divider"></div>`;
   html += `<div class="bd-row"><span class="label">会员礼包金额（仅计一次）</span><span class="value">${fmtYen(giftAmt)}</span></div>`;
-  html += `<div class="bd-row highlight" style="background: linear-gradient(135deg, #e0e7ff, #c7d2fe);"><span class="label" style="color:#4338ca;">官网最优价（含礼包）= 官网最优价总价 + 会员礼包</span><span class="value" style="color:#4338ca;">${fmtYen(paymentTotalBd)}</span></div>`;
-  html += `<div class="bd-row highlight" style="background: linear-gradient(135deg, #fef3c7, #fde68a);"><span class="label" style="color:#92400e;">官网最优价（含礼包）VS OTA价格</span><span class="value" style="color:#92400e;">${fmtYen(priceDiff)}</span></div>`;
+  html += `<div class="bd-row highlight" style="background: linear-gradient(135deg, #e0e7ff, #c7d2fe);"><span class="label" style="color:#4338ca;">含礼包总价 = 官网总价 + 礼包</span><span class="value" style="color:#4338ca;">${fmtYen(paymentTotalBd)}</span></div>`;
+  html += `<div class="bd-row highlight" style="background: linear-gradient(135deg, #fef3c7, #fde68a);"><span class="label" style="color:#92400e;">含礼包总价 VS OTA价</span><span class="value" style="color:#92400e;">${fmtYen(priceDiff)}</span></div>`;
 
   document.getElementById('breakdownContent').innerHTML = html;
 }
@@ -3627,9 +3629,10 @@ function doCalculate() {
     const avgOta = sumOta / n;
     const giftAmt = giftMap[gift];
 
-    // 官网最优价（含礼包）= 官网最优价均价 + 会员礼包（礼包仅计一次，不叠加）
-    const paymentPrice = avgOfficial + giftAmt;
+    // 官网最优价（含礼包）总价 = 官网最优价总价 + 会员礼包（礼包仅计一次，不叠加）
+    // 均价 = 总价 / 门市价填写天数
     const paymentTotal = sumOfficial + giftAmt;
+    const paymentPrice = paymentTotal / n;
 
     renderPrice(document.getElementById('officialPrice'), avgOfficial);
     renderPrice(document.getElementById('otaPrice'), avgOta);
